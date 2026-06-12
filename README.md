@@ -4,6 +4,12 @@ Ask multiple AI chat services from one Chrome side panel.
 
 OmniChat lets you type one prompt and broadcast it to ChatGPT, Claude, Gemini, DeepSeek, Grok, and optional custom AI agents. It keeps each provider in its own browser context, captures responses back into the side panel, and includes a split-screen view for comparing live or saved conversations side by side.
 
+## Purpose and Platform Boundaries
+
+OmniChat is built for simultaneous conversation and comparison. The goal is simple: ask the same question across multiple AI tools at the same time so you can compare answers, reasoning styles, speed, and usefulness in one place.
+
+OmniChat does not modify AI models, change provider behavior, bypass provider rules, or interfere with any AI platform. It does not run code on provider servers or claim any partnership with the AI services it can open. The extension only automates the user-facing browser workflow you choose: placing your prompt into selected chat pages, submitting it, and showing the responses back to you for comparison.
+
 ## Features
 
 - Broadcast one prompt to several AI providers at once.
@@ -55,7 +61,7 @@ This project uses Manifest V3 and ships all executable JavaScript inside the ext
 - `sidePanel`: opens the OmniChat side panel.
 - `tabs`: opens and manages provider tabs for selected AI services.
 - `storage`: saves provider preferences, custom agents, active sessions, and local history.
-- `scripting`: injects the packaged content script into provider pages and custom agent pages after permission is granted.
+- `scripting`: runs the packaged browser automation script on provider pages and custom agent pages after permission is granted.
 - `unlimitedStorage`: keeps local history from being aggressively evicted.
 - `declarativeNetRequest`: enables the split-screen view by applying a session-scoped rule only to provider iframes in the split tab.
 - Host permissions for built-in providers: lets OmniChat send prompts and capture responses on selected AI sites.
