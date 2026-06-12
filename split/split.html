@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>OmniChat — Split View</title>
+  <link rel="stylesheet" href="split.css" />
+</head>
+<body>
+  <main id="columns" class="columns"></main>
+  <section id="review" class="review" hidden></section>
+
+  <div class="floatbar">
+    <div class="bar-top">
+      <span class="brand">
+        <img src="../icons/icon48.png" alt="" />
+        OmniChat
+      </span>
+      <div class="model-menu">
+        <button
+          id="modelsBtn"
+          class="ghost-btn"
+          aria-expanded="false"
+          aria-haspopup="true"
+          title="Choose which AIs are open side by side"
+        >Models ▾</button>
+        <div id="modelList" class="model-list" hidden></div>
+      </div>
+      <button id="historyBtn" class="ghost-btn" aria-expanded="false" title="Browse previous conversations">
+        History
+      </button>
+      <button id="newSession" class="ghost-btn" title="Start fresh conversations in every column">
+        New session
+      </button>
+      <button id="backPanel" class="ghost-btn" title="Go back to the side panel">
+        ⬅ Panel
+      </button>
+    </div>
+    <div id="historyPanel" class="history-panel" hidden></div>
+    <div class="bar-row">
+      <textarea
+        id="prompt"
+        rows="1"
+        placeholder="Ask all selected AIs…"
+        aria-label="Your prompt"
+      ></textarea>
+      <button id="send" class="send-btn" aria-label="Broadcast" title="Broadcast">↑</button>
+    </div>
+  </div>
+
+  <script src="split.js"></script>
+</body>
+</html>

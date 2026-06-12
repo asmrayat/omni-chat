@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OmniChat</title>
+  <link rel="stylesheet" href="panel.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <h1>OmniChat</h1>
+    </div>
+    <div class="topbar-actions">
+      <button id="historyBtn" class="ghost-btn" aria-expanded="false" title="Browse previous conversations">
+        History
+      </button>
+      <button id="settingsBtn" class="ghost-btn" aria-expanded="false" title="Add or remove custom agents">
+        Agents
+      </button>
+      <button id="newSession" class="ghost-btn" title="Clear this chat and start fresh threads">
+        New
+      </button>
+    </div>
+  </header>
+
+  <section id="history" class="drawer" hidden>
+    <div class="drawer-head">
+      <p class="section-label">History</p>
+      <button id="clearHistory" class="ghost-btn danger">Clear all</button>
+    </div>
+    <div id="historyList" class="history-list"></div>
+  </section>
+
+  <section id="settings" class="drawer" hidden>
+    <p class="section-label">Custom agents</p>
+    <div id="agentList" class="agent-list"></div>
+    <div class="agent-form">
+      <input id="agentName" type="text" placeholder="Name — e.g. Mistral" aria-label="Agent name" />
+      <input id="agentUrl" type="url" placeholder="Chat URL — e.g. https://chat.mistral.ai/" aria-label="Agent chat URL" />
+      <button id="addAgent" class="ghost-btn add-agent">Add agent</button>
+    </div>
+    <p class="settings-note">
+      Chrome will ask permission for that site. Custom agents use generic
+      detection — they work on most chat sites with a standard message box.
+    </p>
+  </section>
+
+  <section class="channels" aria-label="AI channels">
+    <p class="section-label">Channels</p>
+    <div id="chips" class="chips"></div>
+  </section>
+
+  <main id="transcript" class="transcript" aria-live="polite">
+    <div class="empty-state" id="emptyState">
+      <p class="empty-title">One question, every AI.</p>
+      <p class="empty-body">
+        Pick your channels above, type below, and Broadcast. Answers from
+        every AI stream back right here.
+      </p>
+    </div>
+  </main>
+
+  <footer class="composer">
+    <textarea
+      id="prompt"
+      rows="3"
+      placeholder="Ask all selected AIs…"
+      aria-label="Your prompt"
+    ></textarea>
+    <div class="composer-row">
+      <span class="hint">Enter to send · Shift+Enter new line</span>
+      <button
+        id="splitBtn"
+        class="split-btn"
+        title="Pop the chat out to the middle and tile the AI tabs side by side"
+        aria-label="Open split view"
+      >⊞</button>
+      <button id="send" class="send-btn">Broadcast</button>
+    </div>
+  </footer>
+
+  <script src="panel.js"></script>
+</body>
+</html>
