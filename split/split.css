@@ -26,6 +26,9 @@ html, body {
   height: 100%;
   background: var(--border);
 }
+body.review-mode .columns {
+  display: none;
+}
 
 .review {
   height: 100%;
@@ -34,6 +37,9 @@ html, body {
   background: var(--bg);
 }
 .review[hidden] { display: none; }
+body.review-mode .review {
+  display: flex;
+}
 
 .review-head {
   flex: 0 0 auto;
@@ -127,6 +133,15 @@ html, body {
 }
 .review-answer.error { color: #e5484d; }
 .review-answer.empty-answer { color: var(--muted); }
+.review-empty {
+  margin: auto;
+  max-width: 420px;
+  padding: 16px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
 
 /* draggable divider between columns */
 .gutter {

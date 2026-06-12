@@ -389,19 +389,30 @@ async function renderHistoryList() {
     title.textContent = s.title || "(untitled)";
     const meta = document.createElement("span");
     meta.className = "hist-meta";
-    meta.textContent = `${fmtDate(s.updatedAt)} · ${s.turns.length} prompt${
-      s.turns.length === 1 ? "" : "s"
+    const turns = turnsForSession(s);
+    meta.textContent = `${fmtDate(s.updatedAt)} · ${turns.length} prompt${
+      turns.length === 1 ? "" : "s"
     }`;
     row.append(title, meta);
-    row.addEventListener("click", () => openHistorySession(s.id));
+    row.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openHistorySession(s.id);
+    });
     historyPanel.appendChild(row);
   });
 }
 
+function turnsForSession(s) {
+  return Array.isArray(s && s.turns) ? s.turns : [];
+}
+
 function providerIdsForSession(s) {
   const ids = [];
-  (s.turns || []).forEach((turn) => {
+  turnsForSession(s).forEach((turn) => {
     (turn.providers || []).forEach((id) => {
+      if (!ids.includes(id)) ids.push(id);
+    });
+    Object.keys(turn.answers || {}).forEach((id) => {
       if (!ids.includes(id)) ids.push(id);
     });
   });
@@ -433,6 +444,8 @@ function answerNode(ans) {
 function renderSessionReview(s) {
   reviewEl.innerHTML = "";
   reviewingSessionId = s.id;
+  const turns = turnsForSession(s);
+  const providerIds = providerIdsForSession(s);
 
   const head = document.createElement("header");
   head.className = "review-head";
@@ -441,8 +454,8 @@ function renderSessionReview(s) {
   const title = document.createElement("h2");
   title.textContent = s.title || "(untitled)";
   const meta = document.createElement("p");
-  meta.textContent = `${fmtDate(s.updatedAt)} · ${(s.turns || []).length} prompt${
-    (s.turns || []).length === 1 ? "" : "s"
+  meta.textContent = `${fmtDate(s.updatedAt)} · ${turns.length} prompt${
+    turns.length === 1 ? "" : "s"
   }`;
   titleWrap.append(title, meta);
 
@@ -457,7 +470,15 @@ function renderSessionReview(s) {
   const grid = document.createElement("div");
   grid.className = "review-grid";
 
-  providerIdsForSession(s).forEach((pid) => {
+  if (!turns.length || !providerIds.length) {
+    const empty = document.createElement("p");
+    empty.className = "review-empty";
+    empty.textContent =
+      "This saved conversation does not contain captured split-screen responses yet.";
+    grid.appendChild(empty);
+  }
+
+  providerIds.forEach((pid) => {
     const col = document.createElement("article");
     col.className = "review-col";
 
@@ -465,8 +486,13 @@ function renderSessionReview(s) {
     colHead.textContent = providerName(pid);
     col.appendChild(colHead);
 
-    (s.turns || []).forEach((turn) => {
-      if (!(turn.providers || []).includes(pid)) return;
+    turns.forEach((turn) => {
+      if (
+        !(turn.providers || []).includes(pid) &&
+        !Object.prototype.hasOwnProperty.call(turn.answers || {}, pid)
+      ) {
+        return;
+      }
 
       const item = document.createElement("section");
       item.className = "review-turn";
@@ -483,12 +509,14 @@ function renderSessionReview(s) {
   });
 
   reviewEl.appendChild(grid);
+  document.body.classList.add("review-mode");
   columnsEl.setAttribute("hidden", "");
   reviewEl.removeAttribute("hidden");
 }
 
 function closeReview() {
   reviewingSessionId = null;
+  document.body.classList.remove("review-mode");
   reviewEl.setAttribute("hidden", "");
   columnsEl.removeAttribute("hidden");
 }

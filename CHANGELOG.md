@@ -2,6 +2,11 @@
 
 All notable changes to OmniChat are documented here.
 
+## 1.18.1 - 2026-06-12
+
+- Fixed split-screen history selection so saved conversations reliably load into the review view.
+- Added defensive handling for older or partially captured history entries.
+
 ## 1.18.0 - 2026-06-12
 
 - Added split-screen history review mode for reopening previous conversations.
